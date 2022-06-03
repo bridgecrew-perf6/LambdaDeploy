@@ -29,7 +29,7 @@ jobs:
             aws lambda list-functions >> result.json
             echo hallo1
             sudo apt install jq
-            val=$(cat result.json | jq '.Functions' | jq '.[] | select(.FunctionName | contains ("Test12345"))' | jq .FunctionName)
+            val=$(cat result.json | jq '.Functions' | jq '.[] | select(.FunctionName | contains ("LambdaTweetLoader"))' | jq .FunctionName)
             echo $val
             rm result.json
             # cat result.txt
@@ -41,12 +41,12 @@ jobs:
             # declare -i length
             # length=${#val1}
             
-            #if [ $length -gt 0 ]; then
-            #    aws lambda update-function-code --function-name  $fctname --zip-file "fileb://TweetLoaderZIP.zip"
-            #  else
-            #    aws lambda create-function --function-name $fctname --runtime "python3.8" --role "arn:aws:iam::290544014146:role/LambdaRole" --zip-file "fileb://TweetLoaderZIP.zip" --handler lambda_function.lambda_handler
-            #      
-            #fi
+            if [ $val = fctname]; then
+                aws lambda update-function-code --function-name  $fctname --zip-file "fileb://TweetLoaderZIP.zip"
+              else
+                aws lambda create-function --function-name $fctname --runtime "python3.8" --role "arn:aws:iam::290544014146:role/LambdaRole" --zip-file "fileb://TweetLoaderZIP.zip" --handler lambda_function.lambda_handler
+                  
+            fi
         - name: Configure Environment
           run: | 
             aws lambda update-function-configuration --function-name LambdaTweetLoader --environment  "Variables={BASELINE_FILE=2022-05-14-8.json.gz,BOOKMARK_FILE=bookmark,BUCKET_NAME=tweets-ingested,FODLER_PREFIX=landing/timeline,environment=dev,BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}}" --query "Environment"
