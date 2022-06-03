@@ -46,6 +46,7 @@ jobs:
             fi
         - name: Configure Environment
           run: | 
+            sleep 5
             aws lambda update-function-configuration --function-name LambdaTweetLoader --environment  "Variables={BASELINE_FILE=2022-05-14-8.json.gz,BOOKMARK_FILE=bookmark,BUCKET_NAME=tweets-ingested,FODLER_PREFIX=landing/timeline,environment=dev,BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}}" --query "Environment"
             sleep 5
             aws lambda update-function-configuration --function-name LambdaTweetLoader --timeout 90 --memory-size 1024 
