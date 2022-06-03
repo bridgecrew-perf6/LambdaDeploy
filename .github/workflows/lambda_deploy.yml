@@ -25,7 +25,7 @@ jobs:
             fctname=LambdaTweetLoader
             echo $fctname
             echo testschritt >> test.txt
-            ls
+            ls -la
             aws lambda list-functions
             aws lambda list-functions >> res.json
             echo hallo1
