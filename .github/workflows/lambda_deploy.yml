@@ -23,9 +23,10 @@ jobs:
             cd LambdaFunction
             zip -r ../TweetLoaderZIP.zip .
             cd ../ 
-            fctname=LambdaTweetLoaderLambdaTweetLoader
+            fctname=LambdaTweetLoader
             echo $fctname
             aws lambda list-functions >> res.json
+            echo hallo1
             val1=$(grep $fctname res.json)
             rm res.json
             echo Hallo
