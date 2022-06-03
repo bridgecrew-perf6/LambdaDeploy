@@ -15,6 +15,7 @@ jobs:
           node-version: '12'
       - name: deploy
         run: |
-          cd ../LambdaFunction
+          ls -la
+          cd ../
           ls -la
           
