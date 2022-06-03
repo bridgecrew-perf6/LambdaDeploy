@@ -28,6 +28,7 @@ jobs:
             cat test.txt
             aws lambda list-functions >> result.txt
             echo hallo1
+            sudo apt install grep
             echo $(grep $fctname result.txt)
             val1=$(grep $fctname result.txt)
             echo hallo2
