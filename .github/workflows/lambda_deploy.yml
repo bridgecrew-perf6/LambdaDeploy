@@ -30,7 +30,7 @@ jobs:
             echo hallo1
             sudo apt install jq
             val=$(cat result.json | jq '.Functions' | jq '.[] | select(.FunctionName | contains ("Test12345"))' | jq .FunctionName)
-            echo $ val
+            echo $val
             rm result.json
             # cat result.txt
             # echo $(grep LambdaTweetLoader result.txt)
