@@ -28,8 +28,9 @@ jobs:
             aws lambda list-functions >> res.json
             echo hallo1
             val1=$(grep $fctname res.json)
+            echo hallo2
             rm res.json
-            echo Hallo
+            echo Hallo3
             declare -i length
             length=${#val1}
             
