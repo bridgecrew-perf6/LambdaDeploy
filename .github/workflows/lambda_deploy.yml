@@ -15,7 +15,7 @@ jobs:
           run: |
             ls -la
             cd LambdaFunction
-            zip -r ../TweetLoaderZIP.zip .
+            zip -r ../TweetLoader2ZIP.zip .
             cd ../
             echo "HOME: ${HOME}"
             echo "GITHUB_WORKFLOW: ${GITHUB_WORKFLOW}"
