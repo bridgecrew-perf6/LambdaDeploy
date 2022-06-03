@@ -1,10 +1,6 @@
-**/environment.json
-environment.json
-/LambdaFunction/environment.json
-/TweetLoader/LambdaFunction
-LambdaFunction/environment.json
-**/LambdaFunction/**/*.json
-!environment_TEMPLATE.json
+
+#environment.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
