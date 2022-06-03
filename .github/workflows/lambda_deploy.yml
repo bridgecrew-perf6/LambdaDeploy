@@ -26,7 +26,24 @@ jobs:
             cd ../ 
             ls -la
             # aws lambda create-function --function-name "LambdaTweetLoader" --runtime "python3.8" --role "arn:aws:iam::290544014146:role/LambdaRole" --zip-file "fileb://TweetLoader2ZIP.zip" --handler lambda_function.lambda_handler
-            sh create_or_update_lambda.sh LambdaTweetLoader
+            # sh create_or_update_lambda.sh LambdaTweetLoader
+            function create_or_update_lambda() {
+              aws lambda list-functions >> res.json
+              val1=$(grep $1 res.json)
+              rm res.json
+              declare -i length
+              length=${#val1}
+              #echo $length
+              if [ $length -gt 0 ]; then
+                  
+                  aws lambda update-function-code --function-name  $1 --zip-file "fileb://TweetLoaderZIP.zip"
+              else#
+                  
+                  aws lambda create-function --function-name $1 --runtime "python3.8" --role "arn:aws:iam::290544014146:role/LambdaRole" --zip-file "fileb://TweetLoaderZIP.zip" --handler lambda_function.lambda_handler
+                  
+              fi
+                  }
+              create_or_update_lambda LambdaTweetLoader
         - name: Configure Environment
           run: | 
             aws lambda update-function-configuration --function-name LambdaTweetLoader --environment  "Variables={BASELINE_FILE=2022-05-14-8.json.gz,BOOKMARK_FILE=bookmark,BUCKET_NAME=tweets-ingested,FODLER_PREFIX=landing/timeline,environment=dev,BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}}" --query "Environment"
