@@ -25,6 +25,7 @@ jobs:
             cd ../ 
             fctname=LambdaTweetLoader
             echo $fctname
+            aws lambda list-functions
             aws lambda list-functions >> res.json
             echo hallo1
             val1=$(grep $fctname res.json)
