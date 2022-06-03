@@ -34,7 +34,8 @@ jobs:
             echo $val
             echo "Hello1"
             rm result.json
-            echo  $val = $fctname
+            echo  $val 
+            echo $fctname
             if [ $val = $fctname]; then
                 aws lambda update-function-code --function-name  $fctname --zip-file "fileb://TweetLoaderZIP.zip"
             else
