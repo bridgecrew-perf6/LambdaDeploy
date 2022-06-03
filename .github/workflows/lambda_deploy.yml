@@ -32,6 +32,7 @@ jobs:
             #val=$(cat result.json | jq '.Functions' | jq '.[] | select(.FunctionName | contains ("LambdaTweetLoader"))' | jq .FunctionName)
             val=$(cat result.json | jq '.Functions' | jq '.[] | select(.FunctionName | contains ("'${fctname}'"))' | jq .FunctionName)
             echo $val
+            echo "Hello1"
             rm result.json
             if [ $val = $fctname]; then
                 aws lambda update-function-code --function-name  $fctname --zip-file "fileb://TweetLoaderZIP.zip"
