@@ -25,9 +25,9 @@ jobs:
             ls -la
             cd ../ 
             ls -la
-            aws lambda create-function --function-name "TestLoader5" --runtime "python3.8" --role "arn:aws:iam::290544014146:role/LambdaRole" --zip-file "fileb://TweetLoader2ZIP.zip" --handler lambda_function.lambda_handler
+            aws lambda create-function --function-name "TestLoader6" --runtime "python3.8" --role "arn:aws:iam::290544014146:role/LambdaRole" --zip-file "fileb://TweetLoader2ZIP.zip" --handler lambda_function.lambda_handler
             
         - name: Configure Environment
           run: | 
-            aws lambda update-function-configuration --function-name TestLoader5 --environment  "Variables={BASELINE_FILE=2022-05-14-8.json.gz,BOOKMARK_FILE=bookmark,BUCKET_NAME=tweets-ingested,FODLER_PREFIX=landing/timeline,environment=dev,BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}}" --query "Environment"
-            aws lambda update-function-configuration --function-name TestLoader5 --timeout 90 --memory-size 1024 
+            aws lambda update-function-configuration --function-name TestLoader6 --environment  "Variables={BASELINE_FILE=2022-05-14-8.json.gz,BOOKMARK_FILE=bookmark,BUCKET_NAME=tweets-ingested,FODLER_PREFIX=landing/timeline,environment=dev,BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}}" --query "Environment"
+            aws lambda update-function-configuration --function-name TestLoader6 --timeout 90 --memory-size 1024 
