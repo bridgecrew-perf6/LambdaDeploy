@@ -19,4 +19,3 @@ function create_or_update_lambda() {
 #does_lambda_exist $1
 create_or_update_lambda $1
 
-LambdaTweetLoader
