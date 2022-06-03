@@ -30,7 +30,7 @@ jobs:
             echo hallo1
             sudo apt install jq
             #val=$(cat result.json | jq '.Functions' | jq '.[] | select(.FunctionName | contains ("LambdaTweetLoader"))' | jq .FunctionName)
-            val=$(cat result.json | jq '.Functions' | jq '.[] | select(.FunctionName | contains ($fctname))' | jq .FunctionName)
+            val=$(cat result.json | jq '.Functions' | jq '.[] | select(.FunctionName | contains (${fctname}))' | jq .FunctionName)
             echo $val
             rm result.json
             if [ $val = fctname]; then
