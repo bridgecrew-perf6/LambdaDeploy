@@ -17,4 +17,6 @@ jobs:
             cd LambdaFunction
             zip -r ../TweetLoader2ZIP.zip .
             ls -la
+            cd ../ 
+            ls -la
             aws lambda create-function --function-name "TestLoader4" --runtime "python3.8" --role "arn:aws:iam::290544014146:role/LambdaRole" --zip-file "fileb://TweetLoader2ZIP.zip" --handler lambda_function.lambda_handler
