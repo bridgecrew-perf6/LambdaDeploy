@@ -37,8 +37,8 @@ jobs:
             echo  $val 
             echo $fctname
             echo ${val:1:-1}
-            echo [${val:1:-1}=$fctname]
-            if [${val:1:-1}=$fctname]; then
+            echo [ ${val:1:-1} = $fctname ]
+            if [ ${val:1:-1} = $fctname ]; then
                 aws lambda update-function-code --function-name  $fctname --zip-file "fileb://TweetLoaderZIP.zip"
             else
                 aws lambda create-function --function-name $fctname --runtime "python3.8" --role "arn:aws:iam::290544014146:role/LambdaRole" --zip-file "fileb://TweetLoaderZIP.zip" --handler lambda_function.lambda_handler
