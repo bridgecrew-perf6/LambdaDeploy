@@ -19,12 +19,13 @@ jobs:
             aws-region: us-east-1
         - name: Create LambdaFunction 
           run: |
-            ls -la
             cd LambdaFunction
             zip -r ../TweetLoaderZIP.zip .
             cd ../ 
             fctname=LambdaTweetLoader
             echo $fctname
+            echo testschritt >> test.txt
+            ls
             aws lambda list-functions
             aws lambda list-functions >> res.json
             echo hallo1
