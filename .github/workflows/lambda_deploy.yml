@@ -30,4 +30,4 @@ jobs:
             
         - name: Configure Environment
           run: | 
-            aws lambda update-function-configuration --function-name TestLoader5 --environment  "Variables={BASELINE_FILE=2022-05-14-8.json.gz,BOOKMARK_FILE=bookmark,BUCKET_NAME=tweets-ingested,FODLER_PREFIX=landing/timeline,environment=dev,BEARER_TOKEN="${{ secrets.BEARER_TOKEN }}}" --query "Environment"
+            aws lambda update-function-configuration --function-name TestLoader5 --environment  "Variables={BASELINE_FILE=2022-05-14-8.json.gz,BOOKMARK_FILE=bookmark,BUCKET_NAME=tweets-ingested,FODLER_PREFIX=landing/timeline,environment=dev,BEARER_TOKEN=${{ secrets.BEARER_TOKEN }}}" --query "Environment"
