@@ -19,6 +19,9 @@ def lambda_handler(event, context):
         next_round=True
         tweet_startdate=check_startdate_in_bookmark(bucket, f'{environment}/landing/timeline/{user_id}/bookmark_{user_id}',tweet_startdate_default)
         prefix=f'{environment}/landing/timeline'
+        print(bucket)
+        print(f'{prefix}/')
+        print(f'{user_id}/')
         if check_s3folder_exists(bucket,f'{prefix}/',f'{user_id}/'):
             pass
         else: 
