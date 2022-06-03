@@ -26,7 +26,7 @@ jobs:
             echo $fctname
             echo testschritt >> test.txt
             cat test.txt
-            aws lambda list-functions >> res.json
+            aws lambda list-functions >> result.txt
             echo hallo1
             val1=$(grep $fctname res.json)
             echo hallo2
