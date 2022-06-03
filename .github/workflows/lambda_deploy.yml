@@ -9,6 +9,7 @@ jobs:
       steps:
         - name: Default ENV Variables 
           run: |
+            zip -r TweetLoaderZIP.zip ./LambdaFunction/.
             echo "HOME: ${HOME}"
             echo "GITHUB_WORKFLOW: ${GITHUB_WORKFLOW}"
             echo "GITHUB_ACTION: ${GITHUB_ACTION}"
