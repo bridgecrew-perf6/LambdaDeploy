@@ -26,10 +26,9 @@ jobs:
             echo $fctname
             echo testschritt >> test.txt
             cat test.txt
-            json -v
             aws lambda list-functions >> result.txt
             echo hallo1
-            val1=$(grep $fctname res.txt)
+            val1=$(grep $fctname result.txt)
             echo hallo2
             rm res.json
             echo Hallo3
