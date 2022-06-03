@@ -1,21 +1,24 @@
-name: Deploy
-
-on:
-  push:
-    branches:
-    - main
+name: Env Test
+on: push 
+env: 
+  WF_ENV: Available to all jobs 
 
 jobs:
-  deploy_lambda:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '12'
-      - name: deploy
-        run: |
-          ls -la
-          cd ../
-          ls -la
-          
+  log-default-env: 
+      runs-on: ubuntu-latest
+      steps:
+        - name: Default ENV Variables 
+          run: |
+            echo "HOME: ${HOME}"
+            echo "GITHUB_WORKFLOW: ${GITHUB_WORKFLOW}"
+            echo "GITHUB_ACTION: ${GITHUB_ACTION}"
+            echo "GITHUB_ACTIONS: ${GITHUB_ACTIONS}"
+            echo "GITHUB_ACTOR: ${GITHUB_ACTOR}"
+            echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}"
+            echo "GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}"
+            echo "GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}"
+            echo "GITHUB_SHA: ${GITHUB_SHA}"
+            echo "GITHUB_REF: ${GITHUB_REF}"
+            echo "WF_ENV: ${WF_ENV}"
+            echo "JOB_ENV: ${JOB_ENV}"
+            echo "STEP_ENV: ${STEP_ENV}"
