@@ -46,14 +46,23 @@ jobs:
           run: |
             #Get ARN
             fctname=LambdaTweetLoader
+            RuleName=TweetLoads120Min
             #echo $fctname
             #substitute name with variable!!!! --> is missing!
             #echo $(aws lambda get-function --function-name LambdaTweetLoader | jq .Configuration.FunctionArn)
             #echo $(aws lambda get-function --function-name LambdaTweetLoader | jq .Configuration.FunctionArn)
             #arnName=$(aws lambda get-function --function-name LambdaTweetLoader | jq .Configuration.FunctionArn)
-            #echo ${arnName:1:-1}
-            aws events put-rule --name TweetLoads120Min --schedule-expression 'rate(120 minutes)'
-            #aws lambda add-permission --function-name LambdaTweetLoader --statement-id TweetLoads120Min --action 'lambda:InvokeFunction' --principal events.amazonaws.com --source-arn ${arnName}
-            aws lambda add-permission --function-name LambdaTweetLoader --statement-id TweetLoads120Min --action 'lambda:InvokeFunction' --principal events.amazonaws.com --source-arn $(aws lambda get-function --function-name LambdaTweetLoader | jq -r .Configuration.FunctionArn)
-            #aws events put-targets --rule TweetLoads120Min --targets "Id"="1","Arn"="'$(aws lambda get-function --function-name LambdaTweetLoader | jq -r .Configuration.FunctionArn)'"
+            
+            val=$(cat rules_list.json | jq '.Rules' | jq '.[] | select(.Name | contains ("'${RuleName}'"))' | jq -r .Name)
+            if [ $val = $fctname ]; then
+              echo delete rule and set new rule
+              aws events delete-rule --name $RuleName
+              aws events put-rule --name $RuleName --schedule-expression 'rate(120 minutes)'
+              aws lambda add-permission --function-name LambdaTweetLoader --statement-id $RuleName --action 'lambda:InvokeFunction' --principal events.amazonaws.com --source-arn $(aws lambda get-function --function-name LambdaTweetLoader | jq -r .Configuration.FunctionArn)
+              aws events put-targets --rule $RuleName --targets "Id"="1","Arn"="'$(aws lambda get-function --function-name LambdaTweetLoader | jq -r .Configuration.FunctionArn)'"
+            else
+              aws events put-rule --name $RuleName --schedule-expression 'rate(120 minutes)'
+              aws lambda add-permission --function-name LambdaTweetLoader --statement-id $RuleName --action 'lambda:InvokeFunction' --principal events.amazonaws.com --source-arn $(aws lambda get-function --function-name LambdaTweetLoader | jq -r .Configuration.FunctionArn)
+              aws events put-targets --rule $RuleName --targets "Id"="1","Arn"="'$(aws lambda get-function --function-name LambdaTweetLoader | jq -r .Configuration.FunctionArn)'"
+            fi
 

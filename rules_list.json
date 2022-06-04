@@ -1,0 +1,11 @@
+{
+    "Rules": [
+        {
+            "State": "ENABLED", 
+            "ScheduleExpression": "rate(120 minutes)", 
+            "EventBusName": "default", 
+            "Name": "TweetLoads120Min", 
+            "Arn": "arn:aws:events:us-east-1:290544014146:rule/TweetLoads120Min"
+        }
+    ]
+}
