@@ -48,11 +48,12 @@ jobs:
             fctname=LambdaTweetLoader
             #echo $fctname
             #substitute name with variable!!!! --> is missing!
-            echo $(aws lambda get-function --function-name LambdaTweetLoader | jq .Configuration.FunctionArn)
-            echo $(aws lambda get-function --function-name LambdaTweetLoader | jq .Configuration.FunctionArn)
-            arnName=$(aws lambda get-function --function-name LambdaTweetLoader | jq .Configuration.FunctionArn)
-            echo ${arnName:1:-1}
+            #echo $(aws lambda get-function --function-name LambdaTweetLoader | jq .Configuration.FunctionArn)
+            #echo $(aws lambda get-function --function-name LambdaTweetLoader | jq .Configuration.FunctionArn)
+            #arnName=$(aws lambda get-function --function-name LambdaTweetLoader | jq .Configuration.FunctionArn)
+            #echo ${arnName:1:-1}
             aws events put-rule --name TweetLoads120Min --schedule-expression 'rate(120 minutes)'
-            aws lambda add-permission --function-name LambdaTweetLoader --statement-id TweetLoads120Min --action 'lambda:InvokeFunction' --principal events.amazonaws.com --source-arn ${arnName}
-            aws events put-targets --rule TweetLoads120Min --targets "Id"="1","Arn"="'${arnName}'"
+            #aws lambda add-permission --function-name LambdaTweetLoader --statement-id TweetLoads120Min --action 'lambda:InvokeFunction' --principal events.amazonaws.com --source-arn ${arnName}
+            aws lambda add-permission --function-name LambdaTweetLoader --statement-id TweetLoads120Min --action 'lambda:InvokeFunction' --principal events.amazonaws.com --source-arn $(aws lambda get-function --function-name LambdaTweetLoader | jq -r .Configuration.FunctionArn)
+            #aws events put-targets --rule TweetLoads120Min --targets "Id"="1","Arn"="'$(aws lambda get-function --function-name LambdaTweetLoader | jq -r .Configuration.FunctionArn)'"
 
