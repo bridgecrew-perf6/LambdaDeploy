@@ -55,7 +55,7 @@ jobs:
         - name: Schedule Lambda Function every 120 Minutes
           run: |
             #Get ARN
-            echo fctname
+            echo $fctname
             echo $(aws lambda get-function --function-name LambdaTweetLoader | jq .Configuration.FunctionArn)
             echo $(aws lambda get-function --function-name ${fctname} | jq .Configuration.FunctionArn)
             arnName=$(aws lambda get-function --function-name ${fctname} | jq .Configuration.FunctionArn)
