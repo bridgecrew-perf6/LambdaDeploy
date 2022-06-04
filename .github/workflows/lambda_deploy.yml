@@ -22,21 +22,11 @@ jobs:
             zip -r ../TweetLoaderZIP.zip .
             cd ../ 
             fctname=LambdaTweetLoader
-            echo $fctname
-            echo testschritt >> test.txt
-            cat test.txt
             aws lambda list-functions >> result.json
-            echo hallo1
             sudo apt install jq
             #val=$(cat result.json | jq '.Functions' | jq '.[] | select(.FunctionName | contains ("LambdaTweetLoader"))' | jq .FunctionName)
             val=$(cat result.json | jq '.Functions' | jq '.[] | select(.FunctionName | contains ("'${fctname}'"))' | jq .FunctionName)
-            echo $val
-            echo "Hello1"
             rm result.json
-            echo  $val 
-            echo $fctname
-            echo ${val:1:-1}
-            echo [ ${val:1:-1} = $fctname ]
             if [ ${val:1:-1} = $fctname ]; then
                 aws lambda update-function-code --function-name  $fctname --zip-file "fileb://TweetLoaderZIP.zip"
             else
@@ -56,10 +46,11 @@ jobs:
           run: |
             #Get ARN
             fctname=LambdaTweetLoader
-            echo $fctname
+            #echo $fctname
+            #substitute name with variable!!!! --> is missing!
             echo $(aws lambda get-function --function-name LambdaTweetLoader | jq .Configuration.FunctionArn)
-            echo $(aws lambda get-function --function-name $fctname | jq .Configuration.FunctionArn)
-            arnName=$(aws lambda get-function --function-name $fctname | jq .Configuration.FunctionArn)
+            echo $(aws lambda get-function --function-name LambdaTweetLoader | jq .Configuration.FunctionArn)
+            arnName=$(aws lambda get-function --function-name LambdaTweetLoader | jq .Configuration.FunctionArn)
             echo ${arnName:1:-1}
             aws events put-rule --name TweetLoads120Min --schedule-expression 'rate(120 minutes)'
             aws lambda add-permission --function-name LambdaTweetLoader --statement-id TweetLoads120Min --action 'lambda:InvokeFunction' --principal events.amazonaws.com --source-arn ${arnName}
