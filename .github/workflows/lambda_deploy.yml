@@ -56,7 +56,10 @@ jobs:
             val=$(cat rules_list.json | jq '.Rules' | jq '.[] | select(.Name | contains ("'${RuleName}'"))' | jq -r .Name)
             if [ $val = $RuleName ]; then
               echo delete rule and set new rule
+              #Delete Rule
               aws events delete-rule --name $RuleName
+              #Remove permission
+              aws lambda remove-permission --function-name $fctname --statement-id $RuleName
               aws events put-rule --name $RuleName --schedule-expression 'rate(120 minutes)'
               aws lambda add-permission --function-name LambdaTweetLoader --statement-id $RuleName --action 'lambda:InvokeFunction' --principal events.amazonaws.com --source-arn $(aws lambda get-function --function-name LambdaTweetLoader | jq -r .Configuration.FunctionArn)
               aws events put-targets --rule $RuleName --targets "Id"="1","Arn"="'$(aws lambda get-function --function-name LambdaTweetLoader | jq -r .Configuration.FunctionArn)'"
