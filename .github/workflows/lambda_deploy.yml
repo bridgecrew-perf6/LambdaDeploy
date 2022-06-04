@@ -61,6 +61,7 @@ jobs:
               aws lambda add-permission --function-name LambdaTweetLoader --statement-id $RuleName --action 'lambda:InvokeFunction' --principal events.amazonaws.com --source-arn $(aws lambda get-function --function-name LambdaTweetLoader | jq -r .Configuration.FunctionArn)
               aws events put-targets --rule $RuleName --targets "Id"="1","Arn"="'$(aws lambda get-function --function-name LambdaTweetLoader | jq -r .Configuration.FunctionArn)'"
             else
+              echo New Rule will be created 
               aws events put-rule --name $RuleName --schedule-expression 'rate(120 minutes)'
               aws lambda add-permission --function-name LambdaTweetLoader --statement-id $RuleName --action 'lambda:InvokeFunction' --principal events.amazonaws.com --source-arn $(aws lambda get-function --function-name LambdaTweetLoader | jq -r .Configuration.FunctionArn)
               aws events put-targets --rule $RuleName --targets "Id"="1","Arn"="'$(aws lambda get-function --function-name LambdaTweetLoader | jq -r .Configuration.FunctionArn)'"
