@@ -6,6 +6,8 @@ env:
 jobs:
   Deploy_Configure_Lambda: 
       runs-on: ubuntu-latest
+      env:
+        FCT_NAME: LambdaTweetLoader
       steps:
         - uses: actions/checkout@v2
         - uses: actions/setup-node@v2
@@ -52,3 +54,13 @@ jobs:
             aws lambda update-function-configuration --function-name LambdaTweetLoader --timeout 90 --memory-size 1024 
             sleep 5
             aws lambda invoke --function-name LambdaTweetLoader response.json
+            
+        - name: Schedule Lambda Function every 120 Minutes
+          run: |
+            #Get ARN
+            arnName=$(aws lambda get-function --function-name ${FCT_NAME} | jq .Configuration.FunctionArn)
+            echo ${arnName:1:-1}
+            aws events put-rule --name TweetLoads120Min --schedule-expression 'rate(120 minutes)'
+            aws lambda add-permission --function-name LambdaTweetLoader --statement-id TweetLoads120Min --action 'lambda:InvokeFunction' --principal events.amazonaws.com --source-arn ${arnName}
+            aws events put-targets --rule TweetLoads120Min --targets "Id"="1","Arn"="'${arnName}'"
+
