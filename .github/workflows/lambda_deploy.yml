@@ -54,7 +54,7 @@ jobs:
             #arnName=$(aws lambda get-function --function-name LambdaTweetLoader | jq .Configuration.FunctionArn)
             
             val=$(cat rules_list.json | jq '.Rules' | jq '.[] | select(.Name | contains ("'${RuleName}'"))' | jq -r .Name)
-            if [ $val = $fctname ]; then
+            if [ $val = $RuleName ]; then
               echo delete rule and set new rule
               aws events delete-rule --name $RuleName
               aws events put-rule --name $RuleName --schedule-expression 'rate(120 minutes)'
