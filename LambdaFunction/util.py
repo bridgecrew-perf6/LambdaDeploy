@@ -38,16 +38,18 @@ def update_bookmark(bucket, key, utc_timestamp):
         raise Exception("Function update_bookmark failed!")
     
 def check_s3folder_exists(bucket,prefix,folder):
+    print("Hello from check s3 folder exisits")
     exists= False
     s3_client=get_client()
     try:
         list_objects= s3_client.list_objects(Bucket=bucket, Prefix=prefix) # prefix: f'{environment}/landing/'
-        print(list_objects)
+        #print(list_objects)
         for i in range(len(list_objects["Contents"])):
             if list_objects["Contents"][i]["Key"] == f'{prefix}{folder}':
                 exists = True
     except:
         raise Exception("check_s3folder_exists function has an error")
+    print(exists,"wirklich?")
     return exists
     
 

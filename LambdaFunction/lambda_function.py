@@ -4,13 +4,13 @@ import os
 import datetime
 from os.path import exists
 from util import check_s3folder_exists, create_s3folder, upload_s3, check_startdate_in_bookmark, update_bookmark
-
+from pprint import pprint
 
 def lambda_handler(event, context):
     # TODO implement
-    user_ids=['40129171', '332617373', '1701930446']
+    user_ids=['1233052817390284800']
     max_results=100 #5 up to 100
-    tweet_startdate_default='2022-05-10T17:00:00Z'
+    tweet_startdate_default='2022-06-08T08:00:00Z'
     environment="dev"
     bucket="tweets-ingested"
     
@@ -27,7 +27,6 @@ def lambda_handler(event, context):
         else: 
             create_s3folder(bucket,prefix,f'{user_id}/')
        
-       
         while next_round:
             try:
                 data=getTimelineWithID(user_id,tweet_startdate, pagination_token,max_results)
@@ -41,6 +40,7 @@ def lambda_handler(event, context):
                     except:
                         next_round=False
                         print("No futher pagination_token available!")
+                    pprint(data['data'])
                     body=json.dumps(data, indent=4, sort_keys=True)
                     upload_s3(body, bucket, file)
                     update_bookmark("tweets-ingested", f"{environment}/landing/timeline/{user_id}/bookmark_{user_id}",f"{datetime.datetime.utcnow().isoformat()[:-7]}Z")
