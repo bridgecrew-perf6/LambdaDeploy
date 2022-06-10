@@ -4,7 +4,7 @@ import os
 import datetime
 from os.path import exists
 from util import check_s3folder_exists, create_s3folder, upload_s3, check_startdate_in_bookmark, update_bookmark
-from pprint import pprint
+#from pprint import pprint
 
 def lambda_handler(event, context):
     # TODO implement
@@ -13,8 +13,8 @@ def lambda_handler(event, context):
     tweet_startdate_default='2022-06-07T08:00:00Z'
     environment="dev"
     bucket="tweets-ingested"
-    prefix=f'{environment}/timeline/raw/{datetime.date.today().year}/{datetime.date.today().month}'
-    current_folder=f'{datetime.date.today().day}'
+    prefix=f'{environment}/timeline/{datetime.date.today().year}/{datetime.date.today().month}/{datetime.date.today().day}'
+    current_folder=f'{datetime.datetime.now().hour}'
     prefix_bookmark=f'{environment}/meta/tweets_batchload_bookmarks'
     print(datetime.datetime.utcnow().isoformat())
     for user_id in user_ids:
