@@ -5,7 +5,6 @@ import json
 # To set your environment variables in your terminal run the following line:
 # export 'BEARER_TOKEN'='<your_bearer_token>'
 bearer_token = os.environ.get("BEARERTOKEN")
-print(bearer_token)
 
 def create_url(user_id,start_time, pagination_token=None, max_results=None ):
     # Replace with user ID below
@@ -28,7 +27,7 @@ def create_url(user_id,start_time, pagination_token=None, max_results=None ):
         raise Exception("the function create_url is defect!")
     
 def get_params():
-    return {"tweet.fields": "created_at,lang"}
+    return {"tweet.fields": "created_at,lang,author_id"}
 
 def bearer_oauth(r):
     """
