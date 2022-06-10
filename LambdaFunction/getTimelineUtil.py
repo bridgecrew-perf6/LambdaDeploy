@@ -27,7 +27,7 @@ def create_url(user_id,start_time, pagination_token=None, max_results=None ):
         raise Exception("the function create_url is defect!")
     
 def get_params():
-    return {"tweet.fields": "created_at,lang,author_id"}
+    return {"tweet.fields": "created_at,lang,author_id,entities"}
 
 def bearer_oauth(r):
     """
