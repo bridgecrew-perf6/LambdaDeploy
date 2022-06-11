@@ -51,12 +51,12 @@ def lambda_handler(event, context):
                     #        f.write('\n')        
                     tweets=""
                     for i in range(0,len(data['data'])):
-                            data['data'][i]["processed_at"]=int(datetime.datetime.utcnow().strftime("%Y%m%d%H%M%S"))
-                            line = json.dumps(data['data'][i])
-                            print("HELLLO")
-                            print(type(line))
-                            tweets= tweets + line + '\n'                            
-                    print(tweets)
+                        created_at_int=int(data['data'][i]["created_at"][0:4]+data['data'][i]["created_at"][5:7]+data['data'][i]["created_at"][8:10]+data['data'][i]["created_at"][11:13]+data['data'][i]["created_at"][14:16])
+                        data['data'][i]["processed_at_int"]=int(datetime.datetime.utcnow().strftime("%Y%m%d%H%M%S"))
+                        data['data'][i]["created_at_int"]=created_at_int
+                        line = json.dumps(data['data'][i])
+                        #print(line)
+                        tweets= tweets + line + '\n'                            
                     upload_s3(tweets, bucket, file)              
                     update_bookmark("tweets-ingested", f'{prefix_bookmark}/bookmark_{user_id}',f"{datetime.datetime.utcnow().isoformat()[:-7]}Z")
 
