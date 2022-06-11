@@ -57,8 +57,8 @@ def lambda_handler(event, context):
                             print(type(line))
                             tweets= tweets + line + '\n'                            
                     print(tweets)
-                    #upload_s3(tweets, bucket, file)              
-                    #update_bookmark("tweets-ingested", f'{prefix_bookmark}/bookmark_{user_id}',f"{datetime.datetime.utcnow().isoformat()[:-7]}Z")
+                    upload_s3(tweets, bucket, file)              
+                    update_bookmark("tweets-ingested", f'{prefix_bookmark}/bookmark_{user_id}',f"{datetime.datetime.utcnow().isoformat()[:-7]}Z")
 
                 except:
                     next_round=False
