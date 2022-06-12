@@ -43,7 +43,7 @@ def check_s3folder_exists(bucket,prefix,folder):
     try:
         list_objects= s3_client.list_objects(Bucket=bucket, Prefix=prefix) # prefix: f'{environment}/landing/'
         for i in range(len(list_objects["Contents"])):
-            print(list_objects["Contents"][i]["Key"])
+            #print(list_objects["Contents"][i]["Key"])
             if list_objects["Contents"][i]["Key"] == f'{prefix}{folder}':
                 exists = True
     except:
