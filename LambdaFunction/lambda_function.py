@@ -12,21 +12,22 @@ def lambda_handler(event, context):
     max_results=100 #5 up to 100
     tweet_startdate_default='2022-06-07T08:00:00Z'
     environment="dev"
-    bucket="tweets-ingested"
+    bucket="ingested-tweets-nh"
+    bucket_meta_data="tweets-meta-data"
     prefix=f'{environment}/timeline/{datetime.date.today().year}/{datetime.date.today().month}/{datetime.date.today().day}'
-    current_folder=f'{datetime.datetime.now().hour}'
+    current_folder=f'{datetime.datetime.now().hour}/{datetime.datetime.now().minute}'
     prefix_bookmark=f'{environment}/meta/tweets_batchload_bookmarks'
     prefix_bookmark_forGlueJob=f'{environment}/meta/Entry_Key'
     #print(datetime.datetime.utcnow().isoformat())
 
     #Get Last Entry_Key
-    entry_key=check_startdate_in_bookmark(bucket, f'{prefix_bookmark_forGlueJob}/bookmark_ForGlueJob',1)
+    entry_key=check_startdate_in_bookmark(bucket_meta_data, f'{prefix_bookmark_forGlueJob}/bookmark_ForGlueJob',1)
 
     for user_id in user_ids:
         pagination_token=None
         next_round=True
         #tweet_startdate=check_startdate_in_bookmark(bucket, f'{environment}/landing/timeline/{user_id}/bookmark/bookmark',tweet_startdate_default)
-        tweet_startdate=check_startdate_in_bookmark(bucket, f'{prefix_bookmark}/bookmark_{user_id}',tweet_startdate_default)
+        tweet_startdate=check_startdate_in_bookmark(bucket_meta_data, f'{prefix_bookmark}/bookmark_{user_id}',tweet_startdate_default)
         if check_s3folder_exists(bucket,f'{prefix}/',f'{current_folder}/'):
             pass
         else: 
@@ -57,7 +58,7 @@ def lambda_handler(event, context):
                         #print(line)
                         tweets= tweets + line + '\n'                            
                     upload_s3(tweets, bucket, file)              
-                    update_bookmark("tweets-ingested", f'{prefix_bookmark}/bookmark_{user_id}',f"{datetime.datetime.utcnow().isoformat()[:-7]}Z")
+                    update_bookmark(bucket_meta_data, f'{prefix_bookmark}/bookmark_{user_id}',f"{datetime.datetime.utcnow().isoformat()[:-7]}Z")
 
                 except:
                     next_round=False
@@ -65,7 +66,7 @@ def lambda_handler(event, context):
                 raise Exception(f"Fetching the latest Tweets from {user_id} failed at {datetime.datetime.utcnow().isoformat()[:-7]}Z")
     
     #Update Bookmark for Pyspark-Glue Job with the the date of the date of the last process_run:
-    update_bookmark(bucket, f'{prefix_bookmark_forGlueJob}/bookmark_ForGlueJob',str(entry_key))
+    update_bookmark(bucket_meta_data, f'{prefix_bookmark_forGlueJob}/bookmark_ForGlueJob',str(entry_key))
     print(f'The last entry_key is: {entry_key}')   
     return {
             'statusCode': 200,
